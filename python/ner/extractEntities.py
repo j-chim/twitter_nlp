@@ -1,12 +1,11 @@
 #!/usr/bin/python
 
 import sys
+import io
 import os
 import re
 import subprocess
-import platform
 import time
-import codecs
 
 from signal import *
 
@@ -146,16 +145,12 @@ for line in open('%s/hbc/data/dict-label3' % (BASE_DIR)):
 print >> sys.stderr, "Finished loading all models. Now reading from %s and writing to %s"  % (options.input_file, options.output_file)
 # WRITE TO STDOUT IF NO FILE IS GIVEN FOR OUTPUT
 out_fp = open(options.output_file, "wb+") if options.output_file is not None else sys.stdout
-with open(options.input_file) as fp:
+with io.open(options.input_file, encoding="utf-8") as fp:
     nLines = 0
-    #row = fp.readline().strip().split("\t")
-    #tweet = row[options.text_pos]
-    #line = tweet.encode('utf-8')
     while line:
         nLines += 1
         row = fp.readline().strip().split("\t")
-        tweet = row[options.text_pos]
-        line = tweet.encode('utf-8', "ignore")
+        line = row[options.text_pos]
         if not line:
             print >> sys.stderr, "Finished reading %s lines from %s"  % (nLines -1, options.input_file)
             break
